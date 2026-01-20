@@ -68,10 +68,11 @@ class EcoCounterScraper:
                 const scripts = document.querySelectorAll('script');
                 let content = '';
 
-                // Find script containing site data
+                // Find script containing site data (look for pattern indicating site data)
                 for (let i = 0; i < scripts.length; i++) {
                     const text = scripts[i].textContent || '';
-                    if (text.indexOf('Wagenhalsstra') > -1) {
+                    // Look for sites data structure pattern
+                    if (text.indexOf('"sites":') > -1 || text.indexOf('\\\\"location\\\\":') > -1) {
                         content = text;
                         break;
                     }
@@ -90,8 +91,8 @@ class EcoCounterScraper:
                     const idEnd = content.indexOf(',', idStart);
                     const id = content.substring(idStart, idEnd).trim();
 
-                    // Check if it's a site ID (100... or 300...)
-                    if (id.length >= 9 && (id.startsWith('100') || id.startsWith('300'))) {
+                    // Check if it's a site ID (common eco-counter patterns: 100..., 300..., or other 8+ digit IDs)
+                    if (id.length >= 8 && /^[13]\\d{8,}/.test(id)) {
                         const chunk = content.substring(idxFound, idxFound + 600);
 
                         // Extract name: \\"name\\":\\"...
@@ -125,7 +126,7 @@ class EcoCounterScraper:
                     }
 
                     pos = idxFound + 1;
-                    if (sites.length > 20) break;
+                    if (sites.length > 50) break;  // Increased limit for cities with many counters
                 }
 
                 return sites;
@@ -259,7 +260,7 @@ class EcoCounterScraper:
                         let inTotalCounts = 0;
 
                         if (inCountsMatch) {
-                            const countsPattern = /\\\\"counts\\\\":(\d+)/g;
+                            const countsPattern = /\\\\"counts\\\\":(\\d+)/g;
                             let match;
                             while ((match = countsPattern.exec(inCountsMatch[1])) !== null) {
                                 inTotalCounts += parseInt(match[1]);
@@ -275,7 +276,7 @@ class EcoCounterScraper:
                         let outTotalCounts = 0;
 
                         if (outCountsMatch) {
-                            const countsPattern = /\\\\"counts\\\\":(\d+)/g;
+                            const countsPattern = /\\\\"counts\\\\":(\\d+)/g;
                             let match;
                             while ((match = countsPattern.exec(outCountsMatch[1])) !== null) {
                                 outTotalCounts += parseInt(match[1]);
@@ -341,7 +342,7 @@ class EcoCounterScraper:
                             let inTotalCounts = 0;
 
                             if (inCountsMatch) {
-                                const countsPattern = /\\\\"counts\\\\":(\d+)/g;
+                                const countsPattern = /\\\\"counts\\\\":(\\d+)/g;
                                 let match;
                                 while ((match = countsPattern.exec(inCountsMatch[1])) !== null) {
                                     inTotalCounts += parseInt(match[1]);
@@ -357,7 +358,7 @@ class EcoCounterScraper:
                             let outTotalCounts = 0;
 
                             if (outCountsMatch) {
-                                const countsPattern = /\\\\"counts\\\\":(\d+)/g;
+                                const countsPattern = /\\\\"counts\\\\":(\\d+)/g;
                                 let match;
                                 while ((match = countsPattern.exec(outCountsMatch[1])) !== null) {
                                     outTotalCounts += parseInt(match[1]);
