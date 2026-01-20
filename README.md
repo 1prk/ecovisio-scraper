@@ -1,4 +1,4 @@
-# Eco-Counter Data Scraper
+﻿# Eco-Counter Data Scraper
 
 A flexible Python scraper for extracting bicycle counter data from eco-counter websites for any city.
 
@@ -225,11 +225,3 @@ ecovisio-scraper/
 ├── {cityname}_counters_data.json    # Output: JSON format
 └── {cityname}_counters_data.csv     # Output: CSV format
 ```
-
-## Contributing
-
-This is a specialized scraper for the VV01 Hessen project. For issues or improvements, please contact the project maintainers.
-
-## License
-
-Internal project - not licensed for external use.
