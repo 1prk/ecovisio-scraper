@@ -1,7 +1,7 @@
 """
 Eco-Counter Data Scraper for Stadt Augsburg
 
-This script extracts bicycle counter data from the eco-counter website for Augsburg.
+This script extracts bicycle counter data from the eco-counter website for any city if the URL format is in xxx.eco-counter.com -format..
 It retrieves counter metadata (ID, name, coordinates) and daily average counts (ADT).
 
 Output formats:
