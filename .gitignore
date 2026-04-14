@@ -49,3 +49,6 @@ test-results/
 
 # Claude
 .claude/
+
+*.txt
+*.db
